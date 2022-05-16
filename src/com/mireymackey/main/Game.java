@@ -9,6 +9,7 @@ public class Game implements Runnable{
     public Game(){
         gamePanel = new GamePanel();
         gameFrame = new GameFrame(gamePanel);
+        gamePanel.setFocusable(true);
         gamePanel.requestFocus();
         startGameLoop();
     }
@@ -35,7 +36,7 @@ public class Game implements Runnable{
 
             if (currentTime - lastCheckTime >= 1000000000){
                 lastCheckTime = currentTime;
-                System.out.println("FPS: " + framesCounter);
+//                System.out.println("FPS: " + framesCounter);
                 framesCounter = 0;
             }
         }

@@ -1,4 +1,4 @@
-package Inputs;
+package com.mireymackey.inputs;
 
 import com.mireymackey.main.GamePanel;
 
@@ -38,7 +38,6 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        gamePanel.setRectPosition(e.getX(), e.getY());
     }
 
     @Override
