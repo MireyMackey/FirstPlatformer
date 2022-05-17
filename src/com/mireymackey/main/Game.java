@@ -14,8 +14,9 @@ public class Game implements Runnable{
     private int MAX_FPS = 60;
     private int MAX_UPS = 200;
 
-    private static final int TILES_DEFAULT_SIZE = 32;
-    private static final float SCALE = 1.5f;
+    private static final int TILES_DEFAULT_SIZE = 8;
+    private static final float SCALE = 6f;
+    private static final int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     private static final int TILES_IN_WIDTH = 26;
     private static final int TILES_IN_HEIGHT = 14;
 
@@ -44,11 +45,20 @@ public class Game implements Runnable{
         startGameLoop();
     }
 
-    public int getGameWidth(){
-        return TILES_IN_WIDTH * (int)(TILES_DEFAULT_SIZE * SCALE);
+    public static int getGameWidth(){
+        return TILES_IN_WIDTH * TILES_SIZE;
     }
-    public int getGameHeight(){
-        return TILES_IN_HEIGHT * (int)(TILES_DEFAULT_SIZE * SCALE);
+    public static int getGameHeight(){
+        return TILES_IN_HEIGHT * TILES_SIZE;
+    }
+    public static int getTilesInWidth(){
+        return TILES_IN_WIDTH;
+    }
+    public static int getTilesInHeight(){
+        return TILES_IN_HEIGHT;
+    }
+    public static int getTilesSize(){
+        return TILES_SIZE;
     }
 
     private void windowFocusLost() {
@@ -56,7 +66,7 @@ public class Game implements Runnable{
     }
 
     private void initClasses() {
-        player = new Player(200, 200, (int)(64*SCALE), (int)(40*SCALE));
+        player = new Player(200, 200, (int)(16*SCALE), (int)(16*SCALE));
         levelManager = new LevelManager(this);
     }
 
@@ -70,8 +80,8 @@ public class Game implements Runnable{
         levelManager.update();
     }
     public void render(Graphics g){
-        player.render(g);
         levelManager.draw(g);
+        player.render(g);
     }
 
     @Override
