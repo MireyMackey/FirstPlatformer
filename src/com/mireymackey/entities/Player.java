@@ -4,6 +4,7 @@ import com.mireymackey.utils.LoadSave;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 
 import static com.mireymackey.utils.Constants.PlayerCondition.*;
 import com.mireymackey.utils.LoadSave.*;
@@ -13,7 +14,7 @@ public class Player extends Entity{
     private int animationTick, animationFrameIndex, animationSpeed = 20;
     private int playerAction = IDLE;
     private int playerDirection;
-    private boolean moving = false, attacking = false;
+    private boolean moving = false;
     private boolean left, up, right, down;
     private float playerSpeed = 3.00f;
 
@@ -31,20 +32,21 @@ public class Player extends Entity{
         g.drawImage(animations[playerAction][animationFrameIndex], (int)x, (int)y,width, height, null);
     }
     private void loadAnimation() {
-        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.PLAYER_ATLAS);
-
-        animations = new BufferedImage[9][6];
+        BufferedImage[] img = LoadSave.getSpriteAtlases(LoadSave.PLAYER_ATLAS);
+        animations = new BufferedImage[6][10];
         for (int aniType = 0; aniType < animations.length; aniType++)
             for (int aniFrame = 0; aniFrame < animations[aniType].length; aniFrame++)
-                animations[aniType][aniFrame] = img.getSubimage(aniFrame * 64, aniType * 40, 64, 40);
+                try {
+                    animations[aniType][aniFrame] = img[aniType].getSubimage(aniFrame * 16, 0, 16, 16);
+                } catch (RasterFormatException e){
+                    break;
+                }
     }
     private void setAnimation() {
         int startAnimation = playerAction;
 
         if (moving) playerAction = RUNNING;
         else playerAction = IDLE;
-
-        if (attacking) playerAction = ATTACK_1;
 
         if (startAnimation != playerAction) resetAnimationTick();
     }
@@ -80,7 +82,6 @@ public class Player extends Entity{
             animationFrameIndex++;
             if (animationFrameIndex  >= getFrameAmount(playerAction)) {
                 animationFrameIndex = 0;
-                attacking = false;
             }
         }
     }
@@ -115,10 +116,6 @@ public class Player extends Entity{
 
     public void setDown(boolean down) {
         this.down = down;
-    }
-
-    public void setAttacking(boolean attacking){
-        this.attacking = attacking;
     }
 
     public void resetDirectionBooleans() {

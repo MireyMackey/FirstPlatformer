@@ -17,12 +17,11 @@ public class LevelManager {
     }
 
     private void importOutsideArray() {
-        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.LEVEL_ATLAS);
-        levelSprite = new BufferedImage[48];
-        for (int atlasRow = 0; atlasRow < 4; atlasRow++)
-            for (int atlasColumn = 0; atlasColumn < 12; atlasColumn++){
-                int index = atlasRow * 12 + atlasColumn;
-                levelSprite[index] = img.getSubimage(atlasColumn*32, atlasRow*32, 32, 32);
+        BufferedImage img = LoadSave.getSpriteAtlases(LoadSave.LEVEL_ATLAS)[0];
+        levelSprite = new BufferedImage[64];
+        for (int atlasRow = 0; atlasRow < 8; atlasRow++)
+            for (int atlasColumn = 0; atlasColumn < 8; atlasColumn++){
+                levelSprite[atlasRow * 8 + atlasColumn] = img.getSubimage(atlasColumn*8, atlasRow*8, 8, 8);
             }
     }
 
