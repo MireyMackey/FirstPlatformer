@@ -1,13 +1,12 @@
 package com.mireymackey.entities;
 
-import javax.imageio.ImageIO;
+import com.mireymackey.utils.LoadSave;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Objects;
 
 import static com.mireymackey.utils.Constants.PlayerCondition.*;
+import com.mireymackey.utils.LoadSave.*;
 
 public class Player extends Entity{
     private BufferedImage[][] animations;
@@ -29,18 +28,15 @@ public class Player extends Entity{
         setAnimation();
     }
     public void render(Graphics g){
-        g.drawImage(animations[playerAction][animationFrameIndex], (int)x, (int)y,128, 80, null);
+        g.drawImage(animations[playerAction][animationFrameIndex], (int)x, (int)y,64 * 3, 40 * 3, null);
     }
     private void loadAnimation() {
-        try(InputStream inputStream = getClass().getResourceAsStream("/player_sprites.png")) {
-            BufferedImage img = ImageIO.read(Objects.requireNonNull(inputStream));
-            animations = new BufferedImage[9][6];
-            for (int aniType = 0; aniType < animations.length; aniType++)
-                for (int aniFrame = 0; aniFrame < animations[aniType].length; aniFrame++)
-                    animations[aniType][aniFrame] = img.getSubimage(aniFrame * 64, aniType * 40, 64, 40);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        BufferedImage img = LoadSave.getSpriteAtlas(LoadSave.PLAYER_ATLAS);
+
+        animations = new BufferedImage[9][6];
+        for (int aniType = 0; aniType < animations.length; aniType++)
+            for (int aniFrame = 0; aniFrame < animations[aniType].length; aniFrame++)
+                animations[aniType][aniFrame] = img.getSubimage(aniFrame * 64, aniType * 40, 64, 40);
     }
     private void setAnimation() {
         int startAnimation = playerAction;
