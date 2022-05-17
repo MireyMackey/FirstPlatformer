@@ -19,7 +19,7 @@ public class GamePanel extends JPanel {
         addMouseMotionListener(mouseInputs);
     }
     public void setPanelSize(){
-        Dimension size = new Dimension(1280, 800);
+        Dimension size = new Dimension(game.getGameWidth(),game.getGameHeight());
         setPreferredSize(size);
     }
     public void updateGame(){

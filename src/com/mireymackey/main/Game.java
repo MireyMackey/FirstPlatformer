@@ -1,6 +1,7 @@
 package com.mireymackey.main;
 
 import com.mireymackey.entities.Player;
+import com.mireymackey.levels.LevelManager;
 
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -13,7 +14,13 @@ public class Game implements Runnable{
     private int MAX_FPS = 60;
     private int MAX_UPS = 200;
 
-    Player player;
+    private static final int TILES_DEFAULT_SIZE = 32;
+    private static final float SCALE = 1.5f;
+    private static final int TILES_IN_WIDTH = 26;
+    private static final int TILES_IN_HEIGHT = 14;
+
+    private Player player;
+    private LevelManager levelManager;
 
     public Game(){
         initClasses();
@@ -37,12 +44,20 @@ public class Game implements Runnable{
         startGameLoop();
     }
 
+    public int getGameWidth(){
+        return TILES_IN_WIDTH * (int)(TILES_DEFAULT_SIZE * SCALE);
+    }
+    public int getGameHeight(){
+        return TILES_IN_HEIGHT * (int)(TILES_DEFAULT_SIZE * SCALE);
+    }
+
     private void windowFocusLost() {
         player.resetDirectionBooleans();
     }
 
     private void initClasses() {
-        player = new Player(200, 200);
+        player = new Player(200, 200, (int)(64*SCALE), (int)(40*SCALE));
+        levelManager = new LevelManager(this);
     }
 
     public void startGameLoop(){
@@ -52,9 +67,11 @@ public class Game implements Runnable{
 
     public void update(){
         player.update();
+        levelManager.update();
     }
     public void render(Graphics g){
         player.render(g);
+        levelManager.draw(g);
     }
 
     @Override
