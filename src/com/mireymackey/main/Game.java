@@ -60,14 +60,19 @@ public class Game implements Runnable{
     public static int getTilesSize(){
         return TILES_SIZE;
     }
+    public static float getScale(){
+        return SCALE;
+    }
+
 
     private void windowFocusLost() {
         player.resetDirectionBooleans();
     }
 
     private void initClasses() {
-        player = new Player(200, 200, (int)(16*SCALE), (int)(16*SCALE));
         levelManager = new LevelManager(this);
+        player = new Player(200, 200, (int)(16*SCALE), (int)(16*SCALE));
+        player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
     }
 
     public void startGameLoop(){

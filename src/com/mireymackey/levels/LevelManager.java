@@ -20,6 +20,10 @@ public class LevelManager {
         level1 = new Level(LoadSave.getLevelData());
     }
 
+    public Level getCurrentLevel() {
+        return level1;
+    }
+
     private void importOutsideArray() {
         BufferedImage img = getSpriteAtlases(LoadSave.LEVEL_ATLAS)[0];
         levelSprite = new BufferedImage[64];

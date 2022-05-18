@@ -1,5 +1,6 @@
 package com.mireymackey.entities;
 
+import com.mireymackey.main.Game;
 import com.mireymackey.utils.LoadSave;
 
 import java.awt.Graphics;
@@ -7,7 +8,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 
 import static com.mireymackey.utils.Constants.PlayerCondition.*;
-import com.mireymackey.utils.LoadSave.*;
+import static com.mireymackey.utils.HelpMethods.canMoveHere;
+
 
 public class Player extends Entity{
     private BufferedImage[][] animations;
@@ -17,10 +19,14 @@ public class Player extends Entity{
     private boolean moving = false;
     private boolean left, up, right, down;
     private float playerSpeed = 3.00f;
+    private int[][] levelData;
+    private float xDrawOffset = 5 * Game.getScale();
+    private float yDrawOffset = 4 * Game.getScale();
 
     public Player(float x, float y, int width, int height){
         super(x, y, width, height);
         loadAnimation();
+        initHitbox(x, y, 6 * Game.getScale(), 12 * Game.getScale());
     }
 
     public void update(){
@@ -29,7 +35,9 @@ public class Player extends Entity{
         setAnimation();
     }
     public void render(Graphics g){
-        g.drawImage(animations[playerAction][animationFrameIndex], (int)x, (int)y,width, height, null);
+        g.drawImage(animations[playerAction][animationFrameIndex],
+                (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
+        drawHitbox(g);
     }
     private void loadAnimation() {
         BufferedImage[] img = LoadSave.getSpriteAtlases(LoadSave.PLAYER_ATLAS);
@@ -41,6 +49,10 @@ public class Player extends Entity{
                 } catch (RasterFormatException e){
                     break;
                 }
+    }
+
+    public void loadLevelData(int[][] levelData){
+        this.levelData = levelData;
     }
 
     private boolean transitionAnimationBegin = false;
@@ -84,20 +96,20 @@ public class Player extends Entity{
 
     private void updatePosition(){
         moving = false;
+        if (!left && !right && !up && ! down)
+            return;
 
-        if (left && !right){
-            x -= playerSpeed;
-            moving = true;
-        } else if (right && !left){
-            x += playerSpeed;
-            moving = true;
-        }
+        float xSpeed = 0, ySpeed = 0;
 
-        if (up && !down){
-            y -= playerSpeed;
-            moving = true;
-        } else if (down && !up){
-            y += playerSpeed;
+        if (left && !right) xSpeed = -playerSpeed;
+        else if (right && !left) xSpeed = playerSpeed;
+
+        if (up && !down) ySpeed = -playerSpeed;
+        else if (down && !up) ySpeed = playerSpeed;
+
+        if (canMoveHere(hitbox.x + xSpeed, hitbox.y + ySpeed, hitbox.width, hitbox.height, levelData)){
+            hitbox.x += xSpeed;
+            hitbox.y += ySpeed;
             moving = true;
         }
     }
