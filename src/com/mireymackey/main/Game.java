@@ -11,7 +11,7 @@ public class Game implements Runnable{
     private GameFrame gameFrame;
     private GamePanel gamePanel;
     private Thread gameThread;
-    private int MAX_FPS = 60;
+    private int MAX_FPS = 120;
     private int MAX_UPS = 200;
 
     private static final int TILES_DEFAULT_SIZE = 8;

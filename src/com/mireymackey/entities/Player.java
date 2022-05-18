@@ -42,15 +42,41 @@ public class Player extends Entity{
                     break;
                 }
     }
+
+    private boolean transitionAnimationBegin = false;
     private void setAnimation() {
-        int startAnimation = playerAction;
+        int previousAnimation = playerAction;
 
-        if (moving) playerAction = RUNNING;
-        else playerAction = IDLE;
+        if ((previousAnimation == STOP_RUNNING || previousAnimation == GROUND_HIT)
+                && (animationFrameIndex != 0 || transitionAnimationBegin)){
+            if (animationFrameIndex == 1){
+                transitionAnimationBegin = false;
+            }
+            return;
+        }
 
-        if (startAnimation != playerAction) resetAnimationTick();
+        if (moving) {
+            playerAction = RUNNING;
+        } else playerAction = IDLE;
+
+        if (previousAnimation != playerAction) {
+            resetAnimationTick();
+            if (previousAnimation == RUNNING && playerAction == IDLE) {
+                playerAction = STOP_RUNNING;
+                transitionAnimationBegin = true;
+            }
+        }
     }
-
+    private void updateAnimationTick() {
+        animationTick++;
+        if (animationTick >= animationSpeed){
+            animationTick = 0;
+            animationFrameIndex++;
+            if (animationFrameIndex  >= getFrameAmount(playerAction)) {
+                animationFrameIndex = 0;
+            }
+        }
+    }
     private void resetAnimationTick() {
         animationTick = 0;
         animationFrameIndex = 0;
@@ -73,16 +99,6 @@ public class Player extends Entity{
         } else if (down && !up){
             y += playerSpeed;
             moving = true;
-        }
-    }
-    private void updateAnimationTick() {
-        animationTick++;
-        if (animationTick >= animationSpeed){
-            animationTick = 0;
-            animationFrameIndex++;
-            if (animationFrameIndex  >= getFrameAmount(playerAction)) {
-                animationFrameIndex = 0;
-            }
         }
     }
 
