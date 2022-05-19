@@ -6,7 +6,7 @@ import com.mireymackey.utils.LoadSave;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.mireymackey.utils.LoadSave.getSpriteAtlases;
+import static com.mireymackey.utils.LoadSave.getSpriteImageArray;
 
 public class LevelManager {
 
@@ -25,7 +25,7 @@ public class LevelManager {
     }
 
     private void importOutsideArray() {
-        BufferedImage img = getSpriteAtlases(LoadSave.LEVEL_ATLAS)[0];
+        BufferedImage img = getSpriteImageArray(LoadSave.LEVEL_ATLAS)[0];
         levelSprite = new BufferedImage[64];
         for (int atlasRow = 0; atlasRow < 8; atlasRow++)
             for (int atlasColumn = 0; atlasColumn < 8; atlasColumn++){

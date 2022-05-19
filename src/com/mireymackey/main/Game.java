@@ -17,8 +17,8 @@ public class Game implements Runnable{
     private static final int TILES_DEFAULT_SIZE = 8;
     private static final float SCALE = 6f;
     private static final int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
-    private static final int TILES_IN_WIDTH = 26;
-    private static final int TILES_IN_HEIGHT = 14;
+    private static final int TILES_IN_WIDTH = 28;
+    private static final int TILES_IN_HEIGHT = 16;
 
     private Player player;
     private LevelManager levelManager;
@@ -41,6 +41,7 @@ public class Game implements Runnable{
         });
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
+        gamePanel.setBackground(new Color(34, 34, 34));
 
         startGameLoop();
     }
@@ -71,7 +72,7 @@ public class Game implements Runnable{
 
     private void initClasses() {
         levelManager = new LevelManager(this);
-        player = new Player(200, 200, (int)(16*SCALE), (int)(16*SCALE));
+        player = new Player(200, 300, (int)(16*SCALE), (int)(16*SCALE));
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
     }
 
