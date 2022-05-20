@@ -2,7 +2,10 @@ package com.mireymackey.utils;
 
 import com.mireymackey.main.Game;
 
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 public class HelpMethods {
     public static boolean canMoveHere(float x, float y, float width, float height, int[][] levelData){
@@ -26,7 +29,7 @@ public class HelpMethods {
         float yIndex = y / Game.getTilesSize();
 
         int value = levelData[(int) yIndex][(int) xIndex];
-        if (value >= 64 || value < 0 || value != 63) return true;
+        if (value != 63) return true;
         return false;
     }
     public static float getEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed) {
@@ -62,5 +65,13 @@ public class HelpMethods {
                 return false;
 
         return true;
+    }
+
+    public static BufferedImage flipImage(BufferedImage img){
+        AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+        tx.translate(-img.getWidth(null), 0);
+        AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+        img = op.filter(img, null);
+        return img;
     }
 }

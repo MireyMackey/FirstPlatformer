@@ -15,13 +15,12 @@ public class Player extends Entity{
     private BufferedImage[][] animations;
     private int animationTick, animationFrameIndex, animationSpeed = 15;
     private int playerAction = IDLE;
-    private int playerDirection;
+    private boolean playerDirectionIsRight = true;
     private boolean moving = false;
     private float playerSpeed = 2.00f;
 
     //controls
     private boolean left;
-    private boolean up;
     private boolean right;
     private boolean down;
     private boolean jump;
@@ -43,16 +42,31 @@ public class Player extends Entity{
         initHitbox(x, y, 5 * Game.getScale(), 11 * Game.getScale());
     }
 
+    public void updateDirection(){
+        if (right && !left){
+            playerDirectionIsRight = true;
+        }
+        else if (left && !right){
+            playerDirectionIsRight = false;
+        }
+    }
+
     public void update(){
+        updateDirection();
         updatePosition();
         updateAnimationTick();
         setAnimation();
     }
+
     public void render(Graphics g){
-        g.drawImage(animations[playerAction][animationFrameIndex],
-                (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
-//        drawHitbox(g);
+        if (playerDirectionIsRight)
+            g.drawImage(animations[playerAction][animationFrameIndex],
+                    (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
+        else
+            g.drawImage(flipImage(animations[playerAction][animationFrameIndex]),
+                    (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
     }
+
     private void loadAnimation() {
         BufferedImage[] img = LoadSave.getSpriteImageArray(LoadSave.PLAYER_ATLAS);
         animations = new BufferedImage[6][10];
@@ -107,7 +121,7 @@ public class Player extends Entity{
         if (animationTick >= animationSpeed){
             animationTick = 0;
             animationFrameIndex++;
-            if (animationFrameIndex  >= getFrameAmount(playerAction)) {
+            if (animationFrameIndex  >= getPlayerFrameAmount(playerAction)) {
                 animationFrameIndex = 0;
             }
         }
@@ -122,8 +136,9 @@ public class Player extends Entity{
 
         if (jump)
             jump();
-        if (!left && !right && !inAir)
-            return;
+        if (!inAir)
+            if (left == right)
+                return;
 
         float xSpeed = 0;
 
@@ -184,12 +199,6 @@ public class Player extends Entity{
     public void setRight(boolean right){
         this.right = right;
     }
-    public void setUp(boolean up) {
-        this.up = up;
-    }
-    public boolean isUp() {
-        return up;
-    }
     public boolean isLeft() {
         return left;
     }
@@ -203,7 +212,6 @@ public class Player extends Entity{
     public void resetDirectionBooleans() {
         left = false;
         right = false;
-        up = false;
         down = false;
     }
 }

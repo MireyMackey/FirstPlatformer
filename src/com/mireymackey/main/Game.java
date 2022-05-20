@@ -1,11 +1,10 @@
 package com.mireymackey.main;
 
-import com.mireymackey.entities.Player;
-import com.mireymackey.levels.LevelManager;
+import com.mireymackey.gamestates.Gamestate;
+import com.mireymackey.gamestates.Menu;
+import com.mireymackey.gamestates.Playing;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 
 public class Game implements Runnable{
     private GameFrame gameFrame;
@@ -14,31 +13,22 @@ public class Game implements Runnable{
     private int MAX_FPS = 120;
     private int MAX_UPS = 200;
 
-    private static final int TILES_DEFAULT_SIZE = 8;
-    private static final float SCALE = 6f;
-    private static final int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
-    private static final int TILES_IN_WIDTH = 28;
-    private static final int TILES_IN_HEIGHT = 16;
+    private Playing playing;
+    private Menu menu;
 
-    private Player player;
-    private LevelManager levelManager;
+    public static final int TILES_DEFAULT_SIZE = 8;
+    public static final float SCALE = 6f;
+    public static final int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
+    public static final int TILES_IN_WIDTH = 28;
+    public static final int TILES_IN_HEIGHT = 16;
+
+
 
     public Game(){
         initClasses();
 
         gamePanel = new GamePanel(this);
         gameFrame = new GameFrame(gamePanel);
-        gameFrame.addWindowFocusListener(new WindowFocusListener() {
-            @Override
-            public void windowGainedFocus(WindowEvent e) {
-                gamePanel.getGame().windowFocusLost();
-            }
-
-            @Override
-            public void windowLostFocus(WindowEvent e) {
-
-            }
-        });
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
         gamePanel.setBackground(new Color(34, 34, 34));
@@ -66,14 +56,10 @@ public class Game implements Runnable{
     }
 
 
-    private void windowFocusLost() {
-        player.resetDirectionBooleans();
-    }
 
     private void initClasses() {
-        levelManager = new LevelManager(this);
-        player = new Player(200, 300, (int)(16*SCALE), (int)(16*SCALE));
-        player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
+        menu = new Menu(this);
+        playing = new Playing(this);
     }
 
     public void startGameLoop(){
@@ -82,12 +68,24 @@ public class Game implements Runnable{
     }
 
     public void update(){
-        player.update();
-        levelManager.update();
+        switch (Gamestate.state){
+            case PLAYING -> {
+                playing.update();
+            }
+            case MENU -> {
+                menu.update();
+            }
+        }
     }
     public void render(Graphics g){
-        levelManager.draw(g);
-        player.render(g);
+        switch (Gamestate.state){
+            case PLAYING -> {
+                playing.draw(g);
+            }
+            case MENU -> {
+                menu.draw(g);
+            }
+        }
     }
 
     @Override
@@ -129,7 +127,16 @@ public class Game implements Runnable{
         }
     }
 
-    public Player getPlayer(){
-        return player;
+    public Playing getPlaying() {
+        return playing;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void windowFocusLost() {
+        if(Gamestate.state == Gamestate.PLAYING)
+            playing.getPlayer().resetDirectionBooleans();
     }
 }
