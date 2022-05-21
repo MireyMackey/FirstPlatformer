@@ -1,15 +1,16 @@
 package com.mireymackey.entities;
 
 import com.mireymackey.main.Game;
-import com.mireymackey.utils.LoadSave;
+import com.mireymackey.utils.Constants;
+
+import static com.mireymackey.utils.Constants.EntityConstants.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.RasterFormatException;
 
-import static com.mireymackey.utils.Constants.PlayerCondition.*;
+import static com.mireymackey.utils.Constants.PlayerAction.*;
 import static com.mireymackey.utils.HelpMethods.*;
-
+import static com.mireymackey.utils.LoadSave.*;
 
 public class Player extends Entity{
     private BufferedImage[][] animations;
@@ -38,7 +39,7 @@ public class Player extends Entity{
 
     public Player(float x, float y, int width, int height){
         super(x, y, width, height);
-        loadAnimation();
+        animations = loadAnimation(PLAYER);
         initHitbox(x, y, 5 * Game.getScale(), 11 * Game.getScale());
     }
 
@@ -65,18 +66,6 @@ public class Player extends Entity{
         else
             g.drawImage(flipImage(animations[playerAction][animationFrameIndex]),
                     (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
-    }
-
-    private void loadAnimation() {
-        BufferedImage[] img = LoadSave.getSpriteImageArray(LoadSave.PLAYER_ATLAS);
-        animations = new BufferedImage[6][10];
-        for (int aniType = 0; aniType < animations.length; aniType++)
-            for (int aniFrame = 0; aniFrame < animations[aniType].length; aniFrame++)
-                try {
-                    animations[aniType][aniFrame] = img[aniType].getSubimage(aniFrame * 16, 0, 16, 16);
-                } catch (RasterFormatException e){
-                    break;
-                }
     }
 
     public void loadLevelData(int[][] levelData){

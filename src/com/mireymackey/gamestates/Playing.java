@@ -1,6 +1,7 @@
 package com.mireymackey.gamestates;
 
 import com.mireymackey.entities.Player;
+import com.mireymackey.entities.PortalManager;
 import com.mireymackey.levels.LevelManager;
 import com.mireymackey.main.Game;
 
@@ -12,6 +13,7 @@ public class Playing extends State implements StateMethods{
 
     private Player player;
     private LevelManager levelManager;
+    PortalManager portalManager;
 
     public Playing(Game game) {
         super(game);
@@ -20,6 +22,7 @@ public class Playing extends State implements StateMethods{
 
     private void initClasses() {
         levelManager = new LevelManager(game);
+        portalManager = new PortalManager(this);
         player = new Player(200, 300, (int)(16 * Game.SCALE), (int)(16 * Game.SCALE));
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
     }
@@ -36,11 +39,13 @@ public class Playing extends State implements StateMethods{
     public void update() {
         levelManager.update();
         player.update();
+        portalManager.update();
     }
 
     @Override
     public void draw(Graphics g) {
         levelManager.draw(g);
+        portalManager.draw(g);
         player.render(g);
     }
 

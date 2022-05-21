@@ -1,7 +1,12 @@
 package com.mireymackey.entities;
 
+import com.mireymackey.utils.LoadSave;
+import static com.mireymackey.utils.Constants.EntityConstants.*;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 
 public abstract class Entity {
 
@@ -29,4 +34,6 @@ public abstract class Entity {
     public Rectangle2D.Float getHitbox() {
         return hitbox;
     }
+
+
 }
