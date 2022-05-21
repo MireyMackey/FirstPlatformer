@@ -1,5 +1,6 @@
 package com.mireymackey.entities;
 
+import com.mireymackey.gamestates.Playing;
 import com.mireymackey.main.Game;
 import com.mireymackey.utils.Constants;
 
@@ -34,11 +35,14 @@ public class Player extends Entity{
     private boolean inAir = false;
 
     private int[][] levelData;
+    private Playing playing;
+
     private float xDrawOffset = 5 * Game.getScale();
     private float yDrawOffset = 4 * Game.getScale();
 
-    public Player(float x, float y, int width, int height){
+    public Player(float x, float y, int width, int height, Playing playing){
         super(x, y, width, height);
+        this.playing = playing;
         animations = loadAnimation(PLAYER);
         initHitbox(x, y, 5 * Game.getScale(), 11 * Game.getScale());
     }
@@ -104,6 +108,7 @@ public class Player extends Entity{
                 transitionAnimationBegin = true;
             }
         }
+
     }
     private void updateAnimationTick() {
         animationTick++;
@@ -153,6 +158,9 @@ public class Player extends Entity{
             }
         }
         updateXPos(xSpeed);
+        if (hitbox.y + hitbox.height >= Game.getGameHeight() - 1){
+            playing.resetAll();
+        }
         moving = true;
     }
 
@@ -202,5 +210,17 @@ public class Player extends Entity{
         left = false;
         right = false;
         down = false;
+    }
+
+    public void resetAll(){
+        inAir = false;
+        moving = false;
+        playerAction = IDLE;
+
+        hitbox.x = x;
+        hitbox.y = y;
+
+        if (!isEntityOnFloor(hitbox, levelData))
+            inAir = true;
     }
 }

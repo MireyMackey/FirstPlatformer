@@ -77,6 +77,8 @@ public class Constants {
             public static final int PORTAL_WIDTH = (int) (PORTAL_WIDTH_DEFAULT * Game.getScale());
             public static final int PORTAL_HEIGHT = (int) (PORTAL_HEIGHT_DEFAULT * Game.getScale());
 
+            public static final int PORTAL_DRAW_OFFSET_X = (int) (4 * Game.getScale());
+            public static final int PORTAL_DRAW_OFFSET_Y = (int) (0 * Game.getScale());
         }
     }
 }

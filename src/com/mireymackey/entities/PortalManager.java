@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static com.mireymackey.utils.Constants.EntityConstants.*;
+import static com.mireymackey.utils.Constants.EntityConstants.PortalConstants.*;
 import static com.mireymackey.utils.LoadSave.getLevelPortal;
 import static com.mireymackey.utils.LoadSave.loadAnimation;
 
@@ -28,7 +29,7 @@ public class PortalManager {
 
     public void draw(Graphics g){
          g.drawImage(portalAnimations[portal.getEntityState()][portal.getAnimationFrameIndex()],
-                 (int)portal.hitbox.x, (int)portal.hitbox.y,
+                 (int)portal.hitbox.x - PORTAL_DRAW_OFFSET_X, (int)portal.hitbox.y - PORTAL_DRAW_OFFSET_Y,
                  PortalConstants.PORTAL_WIDTH, PortalConstants.PORTAL_HEIGHT, null);
     }
 

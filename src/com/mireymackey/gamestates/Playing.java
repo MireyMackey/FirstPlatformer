@@ -23,13 +23,9 @@ public class Playing extends State implements StateMethods{
     private void initClasses() {
         levelManager = new LevelManager(game);
         portalManager = new PortalManager(this);
-        player = new Player(200, 300, (int)(16 * Game.SCALE), (int)(16 * Game.SCALE));
+        player = new Player(200, 300, (int)(16 * Game.SCALE), (int)(16 * Game.SCALE), this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
     }
-
-//    public void windowGainedFocus(WindowEvent e) {
-//        gamePanel.getGame().windowFocusLost();
-//    }
 
     private void windowFocusLost() {
         player.resetDirectionBooleans();
@@ -47,6 +43,10 @@ public class Playing extends State implements StateMethods{
         levelManager.draw(g);
         portalManager.draw(g);
         player.render(g);
+    }
+
+    public void resetAll(){
+        player.resetAll();
     }
 
     @Override
