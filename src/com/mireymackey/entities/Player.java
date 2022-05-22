@@ -38,7 +38,7 @@ public class Player extends Entity{
     private Playing playing;
 
     private float xDrawOffset = 5 * Game.getScale();
-    private float yDrawOffset = 4 * Game.getScale();
+    private float yDrawOffset = 5 * Game.getScale();
 
     public Player(float x, float y, int width, int height, Playing playing){
         super(x, y, width, height);
@@ -66,10 +66,10 @@ public class Player extends Entity{
     public void render(Graphics g){
         if (playerDirectionIsRight)
             g.drawImage(animations[playerAction][animationFrameIndex],
-                    (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
+                    (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset) + 1, width, height, null);
         else
             g.drawImage(flipImage(animations[playerAction][animationFrameIndex]),
-                    (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset), width, height, null);
+                    (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset) + 1, width, height, null);
     }
 
     public void loadLevelData(int[][] levelData){

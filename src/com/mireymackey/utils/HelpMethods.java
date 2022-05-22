@@ -9,11 +9,15 @@ import java.awt.image.BufferedImage;
 
 public class HelpMethods {
     public static boolean canMoveHere(float x, float y, float width, float height, int[][] levelData){
-        if (!isSolid(x, y, levelData))
-            if(!isSolid(x + width, y + height, levelData))
-                if(!isSolid(x + width, y, levelData))
-                    if(!isSolid(x, y + height, levelData))
-                        return true;
+        if (!isSolid(x, y, levelData) //top left
+                && !isSolid(x + width, y + height, levelData) //bottom right
+                && !isSolid(x + width, y, levelData) //top right
+                && !isSolid(x, y + height, levelData) //bottom left
+                && !isSolid(x, y + height / 2, levelData) //left center
+                && !isSolid(x + width, y + height / 2, levelData) //right center
+                && !isSolid(x + width / 2, y, levelData) //top center
+                && !isSolid(x + width / 2, y + height, levelData)) //bottom center
+            return true;
         return false;
     }
 
@@ -46,12 +50,12 @@ public class HelpMethods {
     }
 
     public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
-        int currentTile = (int) (hitbox.y / Game.getTilesSize());
+        int currentTile = (int) ((hitbox.y + hitbox.height) / Game.getTilesSize());
         if (airSpeed > 0){
             //falling, so touching floor
             int tilePos = currentTile * Game.getTilesSize();
             int yOffset = (int) (Game.getTilesSize() - hitbox.height);
-            return tilePos + yOffset + Game.getTilesSize() - 1;
+            return tilePos + yOffset - 1;
         } else {
             //jumping, so touching the roof
             return currentTile * Game.getTilesSize();

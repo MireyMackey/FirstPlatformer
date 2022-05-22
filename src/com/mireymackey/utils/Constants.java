@@ -38,18 +38,20 @@ public class Constants {
     public static class EntityConstants{
         public static final int PLAYER = 0;
         public static final int PORTAL = 1;
+        public static final int FLAME = 2;
 
         public static int getEntityFrameAmount(int entityType){
             switch (entityType){
                 case PORTAL -> {return 9;}
                 case PLAYER -> {return 10;}
+                case FLAME -> {return 16;}
                 default -> {return 1;}
             }
         }
 
         public static int getEntityAnimationsAmount(int entityType){
             switch (entityType){
-                case PORTAL -> {return 1;}
+                case PORTAL, FLAME -> {return 1;}
                 case PLAYER -> {return 6;}
                 default -> {return 1;}
             }
@@ -57,18 +59,29 @@ public class Constants {
 
         public static String getEntitySpritePath(int entityType){
             switch (entityType){
-                case PORTAL -> {return "res/portal";}
+                case PORTAL -> {return "res/entities/portal.png";}
+                case FLAME -> {return "res/entities/flame.png";}
                 case PLAYER -> {return "res/player";}
                 default -> {return "";}
             }
         }
 
-        public static int getEntitySpriteSize(int entityType){
+        public static int getEntityGreenCode(int entityType){
             switch (entityType){
-                case PORTAL -> {return 16;}
-                case PLAYER -> {return 16;}
-                default -> {return 16;}
+                case PORTAL -> {return 255;}
+                case FLAME -> {return 254;}
+                default -> {return 0;}
             }
+        }
+
+        public static class FlameConstants{
+            public static final int FLAME_WIDTH_DEFAULT = 8;
+            public static final int FLAME_HEIGHT_DEFAULT = 16;
+            public static final int FLAME_WIDTH = (int) (FLAME_WIDTH_DEFAULT * Game.getScale()/1.5);
+            public static final int FLAME_HEIGHT = (int) (FLAME_HEIGHT_DEFAULT * Game.getScale()/1.5);
+
+            public static final int FLAME_DRAW_OFFSET_X = (int) (-1 * Game.getScale()/1.5);
+            public static final int FLAME_DRAW_OFFSET_Y = (int) (4 * Game.getScale()/1.5);
         }
 
         public static class PortalConstants{
@@ -79,6 +92,53 @@ public class Constants {
 
             public static final int PORTAL_DRAW_OFFSET_X = (int) (4 * Game.getScale());
             public static final int PORTAL_DRAW_OFFSET_Y = (int) (0 * Game.getScale());
+        }
+
+        public static int getEntityOffsetX(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_DRAW_OFFSET_X;}
+                case FLAME -> {return FlameConstants.FLAME_DRAW_OFFSET_X;}
+                default -> {return 0;}
+            }
+        }
+        public static int getEntityOffsetY(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_DRAW_OFFSET_Y;}
+                case FLAME -> {return FlameConstants.FLAME_DRAW_OFFSET_Y;}
+                default -> {return 0;}
+            }
+        }
+
+        public static int getEntityDefaultWidth(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_WIDTH_DEFAULT;}
+                case FLAME -> {return FlameConstants.FLAME_WIDTH_DEFAULT;}
+                case PLAYER -> {return 16;}
+                default -> {return 16;}
+            }
+        }
+        public static int getEntityDefaultHeight(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_HEIGHT_DEFAULT;}
+                case FLAME -> {return FlameConstants.FLAME_HEIGHT_DEFAULT;}
+                case PLAYER -> {return 16;}
+                default -> {return 16;}
+            }
+        }
+        public static int getEntityWidth(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_WIDTH;}
+                case FLAME -> {return FlameConstants.FLAME_WIDTH;}
+                case PLAYER -> {return 16;}
+                default -> {return 16;}
+            }
+        }
+        public static int getEntityHeight(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_HEIGHT;}
+                case FLAME -> {return FlameConstants.FLAME_HEIGHT;}
+                default -> {return 0;}
+            }
         }
     }
 }

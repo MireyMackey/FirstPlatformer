@@ -1,9 +1,12 @@
 package com.mireymackey.gamestates;
 
+import com.mireymackey.entities.Flame;
 import com.mireymackey.entities.Player;
-import com.mireymackey.entities.PortalManager;
+import com.mireymackey.entities.Portal;
 import com.mireymackey.levels.LevelManager;
 import com.mireymackey.main.Game;
+import static com.mireymackey.utils.LoadSave.*;
+import static com.mireymackey.utils.Constants.EntityConstants.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -13,7 +16,8 @@ public class Playing extends State implements StateMethods{
 
     private Player player;
     private LevelManager levelManager;
-    PortalManager portalManager;
+    private Portal portal;
+    private Flame flame;
 
     public Playing(Game game) {
         super(game);
@@ -22,7 +26,13 @@ public class Playing extends State implements StateMethods{
 
     private void initClasses() {
         levelManager = new LevelManager(game);
-        portalManager = new PortalManager(this);
+
+        int[] portalXY = getEntityCoords(getEntityGreenCode(PORTAL));
+        portal = new Portal(portalXY[0], portalXY[1], this);
+
+        int[] flameXY = getEntityCoords(getEntityGreenCode(FLAME));
+        flame = new Flame(flameXY[0], flameXY[1], this);
+
         player = new Player(200, 300, (int)(16 * Game.SCALE), (int)(16 * Game.SCALE), this);
         player.loadLevelData(levelManager.getCurrentLevel().getLevelData());
     }
@@ -35,13 +45,16 @@ public class Playing extends State implements StateMethods{
     public void update() {
         levelManager.update();
         player.update();
-        portalManager.update();
+        portal.update();
+        flame.update();
     }
 
     @Override
     public void draw(Graphics g) {
         levelManager.draw(g);
-        portalManager.draw(g);
+        portal.draw(g);
+        flame.draw(g);
+
         player.render(g);
     }
 
