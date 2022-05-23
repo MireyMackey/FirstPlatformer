@@ -2,9 +2,6 @@ package com.mireymackey.entities;
 
 import com.mireymackey.gamestates.Playing;
 import com.mireymackey.main.Game;
-import com.mireymackey.utils.Constants;
-
-import static com.mireymackey.utils.Constants.EntityConstants.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -12,6 +9,8 @@ import java.awt.image.BufferedImage;
 import static com.mireymackey.utils.Constants.PlayerAction.*;
 import static com.mireymackey.utils.HelpMethods.*;
 import static com.mireymackey.utils.LoadSave.*;
+import static com.mireymackey.utils.Constants.EntityConstants.*;
+
 
 public class Player extends Entity{
     private BufferedImage[][] animations;
@@ -63,7 +62,7 @@ public class Player extends Entity{
         setAnimation();
     }
 
-    public void render(Graphics g){
+    public void draw(Graphics g){
         if (playerDirectionIsRight)
             g.drawImage(animations[playerAction][animationFrameIndex],
                     (int)(hitbox.x - xDrawOffset), (int)(hitbox.y - yDrawOffset) + 1, width, height, null);
@@ -158,10 +157,11 @@ public class Player extends Entity{
             }
         }
         updateXPos(xSpeed);
-        if (hitbox.y + hitbox.height >= Game.getGameHeight() - 1){
-            playing.resetAll();
-        }
         moving = true;
+    }
+
+    public boolean isPlayerFell(){
+        return (hitbox.y + hitbox.height >= Game.getGameHeight() - 1);
     }
 
     private void jump() {
@@ -212,7 +212,7 @@ public class Player extends Entity{
         down = false;
     }
 
-    public void resetAll(){
+    public void reset(){
         inAir = false;
         moving = false;
         playerAction = IDLE;

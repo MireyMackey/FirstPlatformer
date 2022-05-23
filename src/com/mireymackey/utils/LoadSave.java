@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;
 import java.io.*;
+import java.util.ArrayList;
 
 import static com.mireymackey.utils.Constants.EntityConstants.*;
 
@@ -71,17 +72,20 @@ public class LoadSave {
 
     public static BufferedImage[][] loadAnimation(int entityType) {
         BufferedImage[] img = LoadSave.getSpriteImageArray(getEntitySpritePath(entityType));
-        BufferedImage[][] animations = new BufferedImage
-                [getEntityAnimationsAmount(entityType)][getEntityFrameAmount(entityType)];
-        for (int animationType = 0; animationType < animations.length; animationType++)
-            for (int animationFrame = 0; animationFrame < animations[animationType].length; animationFrame++)
+        BufferedImage[][] animations = new BufferedImage[img.length][];
+        ArrayList<BufferedImage> currentAnimation = new ArrayList<>();
+        for (int animationType = 0; animationType < img.length; animationType++) {
+            for (int animationFrame = 0; animationFrame < (int) (img[animationType].getWidth() / getEntityDefaultWidth(entityType)); animationFrame++)
                 try {
-                    animations[animationType][animationFrame] = img[animationType].getSubimage(
+                    currentAnimation.add(img[animationType].getSubimage(
                             animationFrame * getEntityDefaultWidth(entityType), 0,
-                            getEntityDefaultWidth(entityType), getEntityDefaultHeight(entityType));
+                            getEntityDefaultWidth(entityType), getEntityDefaultHeight(entityType)));
                 } catch (RasterFormatException e){
                     break;
                 }
+            animations[animationType] = currentAnimation.toArray(new BufferedImage[0]);
+            currentAnimation.clear();
+        }
         return animations;
     }
 }

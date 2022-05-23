@@ -10,7 +10,7 @@ import static com.mireymackey.utils.LoadSave.loadAnimation;
 
 public abstract class InteractiveEntities extends Entity{
     protected final Playing playing;
-    protected int entityState = 0;
+    public int entityState;
     protected final int entityType;
     protected BufferedImage[][] animations;
     protected int animationFrameIndex;
@@ -26,6 +26,7 @@ public abstract class InteractiveEntities extends Entity{
         animations = loadAnimation(entityType);
 
         initHitbox(x, y, width, height);
+        entityState = getDefaultEntityState(entityType);
     }
 
     protected void updateAnimationTick() {
@@ -33,28 +34,31 @@ public abstract class InteractiveEntities extends Entity{
         if (animationTick >= animationSpeed){
             animationTick = 0;
             animationFrameIndex++;
-            if (animationFrameIndex  >= getEntityFrameAmount(entityType)) {
+            if (animationFrameIndex  >= animations[entityState].length) {
                 animationFrameIndex = 0;
             }
         }
     }
     public void draw(Graphics g){
-        g.drawImage(animations[getEntityState()][getAnimationFrameIndex()],
+        g.drawImage(animations[entityState][getAnimationFrameIndex()],
                 (int)hitbox.x - getEntityOffsetX(entityType), (int)hitbox.y - getEntityOffsetY(entityType),
                 getEntityWidth(entityType), getEntityHeight(entityType), null);
-        drawHitbox(g);
+//        drawHitbox(g);
     }
 
     public void update(){
         updateAnimationTick();
+    }
 
+    public void reset(){
+        hitbox.x = x;
+        hitbox.y = y;
+        animationFrameIndex = 0;
+        animationTick = 0;
+        entityState = getDefaultEntityState(entityType);
     }
 
     public int getAnimationFrameIndex(){
         return animationFrameIndex;
-    }
-
-    public int getEntityState(){
-        return entityState;
     }
 }

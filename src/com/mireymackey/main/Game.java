@@ -7,6 +7,7 @@ import com.mireymackey.gamestates.Playing;
 import java.awt.*;
 
 public class Game implements Runnable{
+
     private GameFrame gameFrame;
     private GamePanel gamePanel;
     private Thread gameThread;
@@ -21,7 +22,7 @@ public class Game implements Runnable{
     public static final int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     public static final int TILES_IN_WIDTH = 28;
     public static final int TILES_IN_HEIGHT = 16;
-
+    public Gamestate gamestate;
 
 
     public Game(){
@@ -60,6 +61,7 @@ public class Game implements Runnable{
     private void initClasses() {
         menu = new Menu(this);
         playing = new Playing(this);
+        gamestate = Gamestate.PLAYING;
     }
 
     public void startGameLoop(){
@@ -78,7 +80,7 @@ public class Game implements Runnable{
         }
     }
     public void render(Graphics g){
-        switch (Gamestate.state){
+        switch (gamestate){
             case PLAYING -> {
                 playing.draw(g);
             }
@@ -130,13 +132,12 @@ public class Game implements Runnable{
     public Playing getPlaying() {
         return playing;
     }
-
     public Menu getMenu() {
         return menu;
     }
 
     public void windowFocusLost() {
         if(Gamestate.state == Gamestate.PLAYING)
-            playing.getPlayer().resetDirectionBooleans();
+            playing.getEntityManager().getPlayer().resetDirectionBooleans();
     }
 }

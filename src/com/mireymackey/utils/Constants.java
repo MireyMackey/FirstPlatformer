@@ -59,7 +59,7 @@ public class Constants {
 
         public static String getEntitySpritePath(int entityType){
             switch (entityType){
-                case PORTAL -> {return "res/entities/portal.png";}
+                case PORTAL -> {return "res/entities/portal";}
                 case FLAME -> {return "res/entities/flame.png";}
                 case PLAYER -> {return "res/player";}
                 default -> {return "";}
@@ -82,6 +82,9 @@ public class Constants {
 
             public static final int FLAME_DRAW_OFFSET_X = (int) (-1 * Game.getScale()/1.5);
             public static final int FLAME_DRAW_OFFSET_Y = (int) (4 * Game.getScale()/1.5);
+
+            public static final int FLAME_INACTIVE = 1;
+            public static final int FLAME_ACTIVE = 0;
         }
 
         public static class PortalConstants{
@@ -92,6 +95,20 @@ public class Constants {
 
             public static final int PORTAL_DRAW_OFFSET_X = (int) (4 * Game.getScale());
             public static final int PORTAL_DRAW_OFFSET_Y = (int) (0 * Game.getScale());
+
+            public static final int PORTAL_INACTIVE = 1;
+            public static final int PORTAL_ACTIVE = 0;
+
+
+        }
+
+        public static int getDefaultEntityState(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_INACTIVE;}
+                case FLAME -> {return FlameConstants.FLAME_ACTIVE;}
+                case PLAYER -> {return PlayerAction.IDLE;}
+                default -> {return 0;}
+            }
         }
 
         public static int getEntityOffsetX(int entityType){
