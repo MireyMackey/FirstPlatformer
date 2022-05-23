@@ -13,7 +13,7 @@ import static com.mireymackey.utils.Constants.EntityConstants.*;
 
 
 public class Player extends Entity{
-    private BufferedImage[][] animations;
+    protected BufferedImage[][] animations;
     private int animationTick, animationFrameIndex, animationSpeed = 15;
     private int playerAction = IDLE;
     private boolean playerDirectionIsRight = true;

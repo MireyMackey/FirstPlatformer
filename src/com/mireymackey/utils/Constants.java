@@ -39,6 +39,7 @@ public class Constants {
         public static final int PLAYER = 0;
         public static final int PORTAL = 1;
         public static final int FLAME = 2;
+        public static final int PLAYER_SOUL = 3;
 
         public static int getEntityFrameAmount(int entityType){
             switch (entityType){
@@ -61,7 +62,8 @@ public class Constants {
             switch (entityType){
                 case PORTAL -> {return "res/entities/portal";}
                 case FLAME -> {return "res/entities/flame.png";}
-                case PLAYER -> {return "res/player";}
+                case PLAYER -> {return "res/entities/player";}
+                case PLAYER_SOUL -> {return "res/entities/playerSoul";}
                 default -> {return "";}
             }
         }

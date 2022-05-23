@@ -14,6 +14,7 @@ public class EntityManager {
     Portal portal;
     Flame flame;
     Player player;
+    PlayerSoul playerSoul;
 
 
     public EntityManager(Playing playing){
@@ -25,8 +26,11 @@ public class EntityManager {
         int[] flameXY = getEntityCoords(getEntityGreenCode(FLAME));
         flame = new Flame(flameXY[0], flameXY[1], playing);
 
-        player = new Player(200, 300, (int)(16 * Game.SCALE), (int)(16 * Game.SCALE), playing);
+        player = new Player(200, 300, (int)(16 * Game.getScale()), (int)(16 * Game.getScale()), playing);
         player.loadLevelData(playing.getLevelManager().getCurrentLevel().getLevelData());
+
+        playerSoul = new PlayerSoul(200, 300, (int)(16 * Game.getScale()), (int)(16 * Game.getScale()), playing);
+        playerSoul.loadLevelData(playing.getLevelManager().getCurrentLevel().getLevelData());
     }
 
     public void update(){
@@ -35,18 +39,20 @@ public class EntityManager {
         flameCheck();
 
         player.update();
+        playerSoul.update();
         portal.update();
         flame.update();
     }
 
     public void draw(Graphics g){
+        playerSoul.draw(g);
         portal.draw(g);
-        flame.draw(g);
         player.draw(g);
+        flame.draw(g);
     }
 
     private void flameCheck() {
-        if (player.getHitbox().intersects(flame.getHitbox())){
+        if (playerSoul.getHitbox().intersects(flame.getHitbox())){
             flame.entityState = Constants.EntityConstants.FlameConstants.FLAME_INACTIVE;
             portal.entityState = Constants.EntityConstants.PortalConstants.PORTAL_ACTIVE;
         }
@@ -60,13 +66,14 @@ public class EntityManager {
     }
 
     private void playerDeadCheck(){
-        if (player.isPlayerFell()){
+        if (player.isPlayerFell() || playerSoul.isPlayerFell()){
             resetEntities();
         }
     }
 
     public void resetEntities(){
         player.reset();
+        playerSoul.reset();
         portal.reset();
         flame.reset();
     }
@@ -74,9 +81,10 @@ public class EntityManager {
     public Playing getPlaying() {
         return playing;
     }
-
     public Player getPlayer() {
         return player;
     }
-
+    public PlayerSoul getPlayerSoul() {
+        return playerSoul;
+    }
 }

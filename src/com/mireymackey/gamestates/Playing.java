@@ -63,36 +63,56 @@ public class Playing extends State implements StateMethods{
     @Override
     public void keyPressed(KeyEvent e) {
         switch (e.getKeyCode()) {
-            case KeyEvent.VK_A -> entityManager.getPlayer().setLeft(true);
-            case KeyEvent.VK_LEFT -> entityManager.getPlayer().setLeft(true);
+            case KeyEvent.VK_LEFT -> {
+                entityManager.getPlayer().setLeft(true);
+                entityManager.getPlayerSoul().setRight(true);
+            }
+//            case KeyEvent.VK_DOWN -> {
+//                entityManager.getPlayer().setDown(true);
+//                entityManager.getPlayerSoul().setDown(true);
+//            }
+            case KeyEvent.VK_RIGHT -> {
+                entityManager.getPlayer().setRight(true);
+                entityManager.getPlayerSoul().setLeft(true);
+            }
+            case KeyEvent.VK_UP -> {
+                entityManager.getPlayer().setJump(true);
+                entityManager.getPlayerSoul().setJump(true);
+            }
+            case KeyEvent.VK_SPACE -> {
+                entityManager.getPlayer().setJump(true);
+                entityManager.getPlayerSoul().setJump(true);
+            }
 
-            case KeyEvent.VK_S -> entityManager.getPlayer().setDown(true);
-            case KeyEvent.VK_DOWN -> entityManager.getPlayer().setDown(true);
-
-            case KeyEvent.VK_D -> entityManager.getPlayer().setRight(true);
-            case KeyEvent.VK_RIGHT -> entityManager.getPlayer().setRight(true);
-
-            case KeyEvent.VK_W -> entityManager.getPlayer().setJump(true);
-            case KeyEvent.VK_UP -> entityManager.getPlayer().setJump(true);
-            case KeyEvent.VK_SPACE -> entityManager.getPlayer().setJump(true);
+            case KeyEvent.VK_Z -> entityManager.getPlayer();
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
         switch (e.getKeyCode()){
-            case KeyEvent.VK_A -> entityManager.getPlayer().setLeft(false);
-            case KeyEvent.VK_LEFT -> entityManager.getPlayer().setLeft(false);
+            case KeyEvent.VK_LEFT -> {
+                entityManager.getPlayer().setLeft(false);
+                entityManager.getPlayerSoul().setRight(false);
+            }
+//            case KeyEvent.VK_DOWN -> {
+//                entityManager.getPlayer().setDown(false);
+//                entityManager.getPlayerSoul().setDown(false);
+//            }
+            case KeyEvent.VK_RIGHT -> {
+                entityManager.getPlayer().setRight(false);
+                entityManager.getPlayerSoul().setLeft(false);
+            }
+            case KeyEvent.VK_UP -> {
+                entityManager.getPlayer().setJump(false);
+                entityManager.getPlayerSoul().setJump(false);
+            }
+            case KeyEvent.VK_SPACE -> {
+                entityManager.getPlayer().setJump(false);
+                entityManager.getPlayerSoul().setJump(false);
+            }
 
-            case KeyEvent.VK_S -> entityManager.getPlayer().setDown(false);
-            case KeyEvent.VK_DOWN -> entityManager.getPlayer().setDown(false);
-
-            case KeyEvent.VK_D -> entityManager.getPlayer().setRight(false);
-            case KeyEvent.VK_RIGHT -> entityManager.getPlayer().setRight(false);
-
-            case KeyEvent.VK_W -> entityManager.getPlayer().setJump(false);
-            case KeyEvent.VK_UP -> entityManager.getPlayer().setJump(false);
-            case KeyEvent.VK_SPACE -> entityManager.getPlayer().setJump(false);
+            case KeyEvent.VK_Z -> entityManager.getPlayer();
         }
     }
 

@@ -8,23 +8,24 @@ import java.awt.*;
 
 public class GamePanel extends JPanel {
     private Game game;
+    private static int panelWidth;
+    private static int panelHeight;
 
     public GamePanel(Game game){
         MouseInputs mouseInputs = new MouseInputs(this);
         this.game = game;
-
-        setPanelSize();
+        panelWidth = getWidth();
+        panelHeight = getHeight();
+//        setPanelSize();
         addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
     }
     public void setPanelSize(){
-        Dimension size = new Dimension(game.getGameWidth(),game.getGameHeight());
+        Dimension size = new Dimension(1920,1080);
         setPreferredSize(size);
     }
-    public void updateGame(){
 
-    }
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -32,5 +33,12 @@ public class GamePanel extends JPanel {
     }
     public Game getGame(){
         return game;
+    }
+
+    public static int getPanelWidth() {
+        return panelWidth;
+    }
+    public static int getPanelHeight() {
+        return panelHeight;
     }
 }

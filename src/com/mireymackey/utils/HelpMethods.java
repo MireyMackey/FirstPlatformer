@@ -1,7 +1,9 @@
 package com.mireymackey.utils;
 
 import com.mireymackey.main.Game;
+import com.mireymackey.main.GamePanel;
 
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
@@ -78,4 +80,9 @@ public class HelpMethods {
         img = op.filter(img, null);
         return img;
     }
+
+//    public static void gameDrawImage(java.awt.Image img, int x, int y, int width, int height, Graphics g){
+//        g.drawImage(img, x + (GamePanel.getPanelWidth() - Game.getGameWidth()) / 2,
+//                y + (GamePanel.getPanelHeight() - Game.getGameHeight()) / 2, width, height, null);
+//    }
 }

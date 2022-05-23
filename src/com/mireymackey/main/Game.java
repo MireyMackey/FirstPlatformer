@@ -11,17 +11,17 @@ public class Game implements Runnable{
     private GameFrame gameFrame;
     private GamePanel gamePanel;
     private Thread gameThread;
-    private int MAX_FPS = 120;
+    private int MAX_FPS = 60;
     private int MAX_UPS = 200;
 
     private Playing playing;
     private Menu menu;
 
     public static final int TILES_DEFAULT_SIZE = 8;
-    public static final float SCALE = 6f;
+    public static final float SCALE = 5f;
     public static final int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
-    public static final int TILES_IN_WIDTH = 28;
-    public static final int TILES_IN_HEIGHT = 16;
+    public static final int TILES_IN_WIDTH = 48;
+    public static final int TILES_IN_HEIGHT = 27;
     public Gamestate gamestate;
 
 
