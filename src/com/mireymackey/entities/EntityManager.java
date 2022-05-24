@@ -10,27 +10,29 @@ import static com.mireymackey.utils.Constants.EntityConstants.*;
 import static com.mireymackey.utils.LoadSave.getEntityCoords;
 
 public class EntityManager {
-    Playing playing;
-    Portal portal;
-    Flame flame;
-    Player player;
-    PlayerSoul playerSoul;
+    private Playing playing;
+    private Portal portal;
+    private Flame flame;
+    private Player player;
+    private PlayerSoul playerSoul;
+    private int[][] levelData;
 
 
     public EntityManager(Playing playing){
         this.playing = playing;
+        levelData = playing.getLevelManager().getCurrentLevel().getLevelData();
 
-        int[] portalXY = getEntityCoords(getEntityGreenCode(PORTAL));
-        portal = new Portal(portalXY[0], portalXY[1], playing);
+        int[] xy;
+        xy = getEntityCoords(getEntityGreenCode(PORTAL));
+        portal = new Portal(xy[0], xy[1]);
 
-        int[] flameXY = getEntityCoords(getEntityGreenCode(FLAME));
-        flame = new Flame(flameXY[0], flameXY[1], playing);
+        xy = getEntityCoords(getEntityGreenCode(FLAME));
+        flame = new Flame(xy[0], xy[1]);
 
-        player = new Player(200, 300, (int)(16 * Game.getScale()), (int)(16 * Game.getScale()), playing);
-        player.loadLevelData(playing.getLevelManager().getCurrentLevel().getLevelData());
-
-        playerSoul = new PlayerSoul(200, 300, (int)(16 * Game.getScale()), (int)(16 * Game.getScale()), playing);
-        playerSoul.loadLevelData(playing.getLevelManager().getCurrentLevel().getLevelData());
+        xy = getEntityCoords(getEntityGreenCode(PLAYER));
+        xy[1] -= Game.getScale() * 4;
+        player = new Player(xy[0], xy[1], (int)(16 * Game.getScale()), (int)(16 * Game.getScale()), levelData);
+        playerSoul = new PlayerSoul(xy[0], xy[1], (int)(16 * Game.getScale()), (int)(16 * Game.getScale()), levelData);
     }
 
     public void update(){
@@ -52,14 +54,15 @@ public class EntityManager {
     }
 
     private void flameCheck() {
-        if (playerSoul.getHitbox().intersects(flame.getHitbox())){
+        if (playerSoul.getHitbox().intersects(flame.getHitbox()) || player.getHitbox().intersects(flame.getHitbox())){
             flame.entityState = Constants.EntityConstants.FlameConstants.FLAME_INACTIVE;
             portal.entityState = Constants.EntityConstants.PortalConstants.PORTAL_ACTIVE;
         }
     }
 
     private void portalCheck(){
-        if (portal.entityState == PortalConstants.PORTAL_ACTIVE && player.getHitbox().intersects(portal.getHitbox())) {
+        if (portal.entityState == PortalConstants.PORTAL_ACTIVE && (player.getHitbox().intersects(portal.getHitbox()) ||
+                playerSoul.getHitbox().intersects(portal.getHitbox()))) {
 //            playing.getGame().gamestate = Gamestate.WIN;
             resetEntities();
         }
@@ -68,6 +71,15 @@ public class EntityManager {
     private void playerDeadCheck(){
         if (player.isPlayerFell() || playerSoul.isPlayerFell()){
             resetEntities();
+        }
+    }
+
+    private void soulCreator(){
+        if (playerSoul != null){
+            double x = player.getHitbox().getX();
+            double y = player.getHitbox().getY();
+            double width = player.getHitbox().getWidth();
+            double height = player.getHitbox().getHeight();
         }
     }
 

@@ -8,10 +8,10 @@ import java.awt.*;
 import static com.mireymackey.utils.Constants.EntityConstants.*;
 import static com.mireymackey.utils.Constants.EntityConstants.FlameConstants.*;
 
-public class Flame extends InteractiveEntities{
+public class Flame extends AnimatedEntity{
 
-    public Flame(float x, float y, Playing playing) {
-        super(x, y, FLAME_WIDTH, FLAME_HEIGHT, FLAME, playing);
+    public Flame(float x, float y) {
+        super(x, y, FLAME_WIDTH, FLAME_HEIGHT, FLAME);
         initHitbox(x, y, (int) (6 * Game.getScale()), (int) (6 * Game.getScale()));
         entityState = FLAME_ACTIVE;
     }

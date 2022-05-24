@@ -32,6 +32,7 @@ public class Constants {
 
     public static class LevelResources{
         public static final String LEVEL_TILES = "res/leveTiles/level_tilemap.png";
+        public static final String SOUL_LEVEL_TILES = "res/leveTiles/soul_level_tilemap.png";
         public static final String LEVEL_ONE = "res/level_one_data/level_one_data2.png";
     }
 
@@ -40,15 +41,6 @@ public class Constants {
         public static final int PORTAL = 1;
         public static final int FLAME = 2;
         public static final int PLAYER_SOUL = 3;
-
-        public static int getEntityFrameAmount(int entityType){
-            switch (entityType){
-                case PORTAL -> {return 9;}
-                case PLAYER -> {return 10;}
-                case FLAME -> {return 16;}
-                default -> {return 1;}
-            }
-        }
 
         public static int getEntityAnimationsAmount(int entityType){
             switch (entityType){
@@ -72,7 +64,8 @@ public class Constants {
             switch (entityType){
                 case PORTAL -> {return 255;}
                 case FLAME -> {return 254;}
-                default -> {return 0;}
+                case PLAYER -> {return 253;}
+                default -> {return -1;}
             }
         }
 
@@ -81,6 +74,9 @@ public class Constants {
             public static final int FLAME_HEIGHT_DEFAULT = 16;
             public static final int FLAME_WIDTH = (int) (FLAME_WIDTH_DEFAULT * Game.getScale()/1.5);
             public static final int FLAME_HEIGHT = (int) (FLAME_HEIGHT_DEFAULT * Game.getScale()/1.5);
+
+            public static final int FLAME_HITBOX_WIDTH = (int) (6 * Game.getScale());
+            public static final int FLAME_HITBOX_HEIGHT= (int) (6 * Game.getScale());
 
             public static final int FLAME_DRAW_OFFSET_X = (int) (-1 * Game.getScale()/1.5);
             public static final int FLAME_DRAW_OFFSET_Y = (int) (4 * Game.getScale()/1.5);
@@ -95,20 +91,47 @@ public class Constants {
             public static final int PORTAL_WIDTH = (int) (PORTAL_WIDTH_DEFAULT * Game.getScale());
             public static final int PORTAL_HEIGHT = (int) (PORTAL_HEIGHT_DEFAULT * Game.getScale());
 
+            public static final int PORTAL_HITBOX_WIDTH = (int) (8 * Game.getScale());
+            public static final int PORTAL_HITBOX_HEIGHT= (int) (16 * Game.getScale());
+
             public static final int PORTAL_DRAW_OFFSET_X = (int) (4 * Game.getScale());
             public static final int PORTAL_DRAW_OFFSET_Y = (int) (0 * Game.getScale());
 
             public static final int PORTAL_INACTIVE = 1;
             public static final int PORTAL_ACTIVE = 0;
+        }
 
+        public static class PlayerConstants{
+            public static final int PLAYER_HITBOX_WIDTH = (int) (5 * Game.getScale());
+            public static final int PLAYER_HITBOX_HEIGHT= (int) (11 * Game.getScale());
 
+            public static final int PLAYER_DRAW_OFFSET_X = (int) (5 * Game.getScale());
+            public static final int PLAYER_DRAW_OFFSET_Y = (int) (5 * Game.getScale());
+        }
+
+        public static int getEntityHitboxWidth(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_HITBOX_WIDTH;}
+                case FLAME -> {return FlameConstants.FLAME_HITBOX_WIDTH;}
+                case PLAYER, PLAYER_SOUL -> {return PlayerConstants.PLAYER_HITBOX_WIDTH;}
+                default -> {return 1;}
+            }
+        }
+
+        public static int getEntityHitboxHeight(int entityType){
+            switch (entityType){
+                case PORTAL -> {return PortalConstants.PORTAL_HITBOX_HEIGHT;}
+                case FLAME -> {return FlameConstants.FLAME_HITBOX_HEIGHT;}
+                case PLAYER, PLAYER_SOUL -> {return PlayerConstants.PLAYER_HITBOX_HEIGHT;}
+                default -> {return 1;}
+            }
         }
 
         public static int getDefaultEntityState(int entityType){
             switch (entityType){
                 case PORTAL -> {return PortalConstants.PORTAL_INACTIVE;}
                 case FLAME -> {return FlameConstants.FLAME_ACTIVE;}
-                case PLAYER -> {return PlayerAction.IDLE;}
+                case PLAYER, PLAYER_SOUL -> {return PlayerAction.IDLE;}
                 default -> {return 0;}
             }
         }
@@ -117,6 +140,7 @@ public class Constants {
             switch (entityType){
                 case PORTAL -> {return PortalConstants.PORTAL_DRAW_OFFSET_X;}
                 case FLAME -> {return FlameConstants.FLAME_DRAW_OFFSET_X;}
+                case PLAYER, PLAYER_SOUL -> {return PlayerConstants.PLAYER_DRAW_OFFSET_X;}
                 default -> {return 0;}
             }
         }
@@ -124,6 +148,7 @@ public class Constants {
             switch (entityType){
                 case PORTAL -> {return PortalConstants.PORTAL_DRAW_OFFSET_Y;}
                 case FLAME -> {return FlameConstants.FLAME_DRAW_OFFSET_Y;}
+                case PLAYER, PLAYER_SOUL -> {return PlayerConstants.PLAYER_DRAW_OFFSET_Y;}
                 default -> {return 0;}
             }
         }
@@ -132,7 +157,7 @@ public class Constants {
             switch (entityType){
                 case PORTAL -> {return PortalConstants.PORTAL_WIDTH_DEFAULT;}
                 case FLAME -> {return FlameConstants.FLAME_WIDTH_DEFAULT;}
-                case PLAYER -> {return 16;}
+                case PLAYER, PLAYER_SOUL -> {return 16;}
                 default -> {return 16;}
             }
         }
@@ -140,7 +165,7 @@ public class Constants {
             switch (entityType){
                 case PORTAL -> {return PortalConstants.PORTAL_HEIGHT_DEFAULT;}
                 case FLAME -> {return FlameConstants.FLAME_HEIGHT_DEFAULT;}
-                case PLAYER -> {return 16;}
+                case PLAYER, PLAYER_SOUL -> {return 16;}
                 default -> {return 16;}
             }
         }
@@ -148,7 +173,7 @@ public class Constants {
             switch (entityType){
                 case PORTAL -> {return PortalConstants.PORTAL_WIDTH;}
                 case FLAME -> {return FlameConstants.FLAME_WIDTH;}
-                case PLAYER -> {return 16;}
+                case PLAYER, PLAYER_SOUL -> {return (int)(16 * Game.getScale());}
                 default -> {return 16;}
             }
         }
@@ -156,6 +181,7 @@ public class Constants {
             switch (entityType){
                 case PORTAL -> {return PortalConstants.PORTAL_HEIGHT;}
                 case FLAME -> {return FlameConstants.FLAME_HEIGHT;}
+                case PLAYER, PLAYER_SOUL -> {return (int)(16 * Game.getScale());}
                 default -> {return 0;}
             }
         }

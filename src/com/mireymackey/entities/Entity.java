@@ -1,5 +1,7 @@
 package com.mireymackey.entities;
 
+import static com.mireymackey.utils.Constants.EntityConstants.*;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
@@ -8,12 +10,16 @@ public abstract class Entity {
     protected float x, y;
     protected int width, height;
     protected Rectangle2D.Float hitbox;
+    protected int entityType;
 
-    public Entity(float x, float y, int width, int height){
+    public Entity(float x, float y, int width, int height, int entityType){
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.entityType = entityType;
+
+        initHitbox(x, y, getEntityHitboxWidth(entityType), getEntityHitboxHeight(entityType));
     }
 
     protected void drawHitbox(Graphics g){
@@ -29,6 +35,4 @@ public abstract class Entity {
     public Rectangle2D.Float getHitbox() {
         return hitbox;
     }
-
-
 }

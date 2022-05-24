@@ -1,31 +1,26 @@
 package com.mireymackey.entities;
 
-import com.mireymackey.gamestates.Playing;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static com.mireymackey.utils.Constants.EntityConstants.*;
+import static com.mireymackey.utils.Constants.EntityConstants.getEntityHeight;
 import static com.mireymackey.utils.LoadSave.loadAnimation;
 
-public abstract class InteractiveEntities extends Entity{
-    protected final Playing playing;
+public abstract class AnimatedEntity extends Entity{
     public int entityState;
-    protected final int entityType;
+
     protected BufferedImage[][] animations;
     protected int animationFrameIndex;
     protected int animationTick;
-    protected int animationSpeed = 15;
+    private int animationSpeed = 15;
 
-    public InteractiveEntities(float x, float y, int width, int height, int entityType, Playing playing){
-        super(x, y, width, height);
-        this.playing = playing;
+    public AnimatedEntity(float x, float y, int width, int height, int entityType) {
+        super(x, y, width, height, entityType);
 
-        this.entityType = entityType;
-        animations = new BufferedImage[getEntityAnimationsAmount(entityType)][9];
+        animations = new BufferedImage[getEntityAnimationsAmount(entityType)][10];
         animations = loadAnimation(entityType);
 
-        initHitbox(x, y, width, height);
         entityState = getDefaultEntityState(entityType);
     }
 
@@ -56,6 +51,11 @@ public abstract class InteractiveEntities extends Entity{
         animationFrameIndex = 0;
         animationTick = 0;
         entityState = getDefaultEntityState(entityType);
+    }
+
+    protected void resetAnimationTick() {
+        animationTick = 0;
+        animationFrameIndex = 0;
     }
 
     public int getAnimationFrameIndex(){

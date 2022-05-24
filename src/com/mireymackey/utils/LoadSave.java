@@ -1,6 +1,5 @@
 package com.mireymackey.utils;
 
-import com.mireymackey.entities.Portal;
 import com.mireymackey.main.Game;
 
 import javax.imageio.ImageIO;
@@ -13,8 +12,6 @@ import java.util.ArrayList;
 import static com.mireymackey.utils.Constants.EntityConstants.*;
 
 public class LoadSave {
-    public static final String PLAYER_ATLAS = "res\\player";
-    public static final String LEVEL_ATLAS = "res\\leveTiles";
     public static final String LEVEL_ONE_DATA = "res\\level_one_data";
 
     public static BufferedImage[] getSpriteImageArray(String fileName){
@@ -48,11 +45,15 @@ public class LoadSave {
 
         for (int j = 0; j < img.getHeight(); j++)
             for (int i = 0; i < img.getWidth(); i++){
-                Color color = new Color(img.getRGB(i, j));
+                Color color = new Color(img.getRGB(i, j), true);
                 int value = color.getRed();
-                if (value >= 64)
-                    //in case of wrong id we replace it with standard one (0)
-                    value = 0;
+                if (value < 0 || value > 63 || color.getAlpha() == 0.0)
+                    //in case of wrong id or transparent pixel we replace it with standard one (63)
+                    value = 63;
+                else if (color.getAlpha() == 100){
+                    System.out.println(j + ' ' + i);
+                    value += 64;
+                }
                 levelData[j][i] = value;
             }
         return levelData;
@@ -75,7 +76,7 @@ public class LoadSave {
         BufferedImage[][] animations = new BufferedImage[img.length][];
         ArrayList<BufferedImage> currentAnimation = new ArrayList<>();
         for (int animationType = 0; animationType < img.length; animationType++) {
-            for (int animationFrame = 0; animationFrame < (int) (img[animationType].getWidth() / getEntityDefaultWidth(entityType)); animationFrame++)
+            for (int animationFrame = 0; animationFrame < (img[animationType].getWidth() / getEntityDefaultWidth(entityType)); animationFrame++)
                 try {
                     currentAnimation.add(img[animationType].getSubimage(
                             animationFrame * getEntityDefaultWidth(entityType), 0,

@@ -83,8 +83,6 @@ public class Playing extends State implements StateMethods{
                 entityManager.getPlayer().setJump(true);
                 entityManager.getPlayerSoul().setJump(true);
             }
-
-            case KeyEvent.VK_Z -> entityManager.getPlayer();
         }
     }
 
@@ -111,8 +109,6 @@ public class Playing extends State implements StateMethods{
                 entityManager.getPlayer().setJump(false);
                 entityManager.getPlayerSoul().setJump(false);
             }
-
-            case KeyEvent.VK_Z -> entityManager.getPlayer();
         }
     }
 
