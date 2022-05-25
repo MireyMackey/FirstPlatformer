@@ -186,4 +186,9 @@ public class Constants {
             }
         }
     }
+
+    public static class FontConstants{
+        public static final String FONT_PATH = "res/fonts/Minecraft.ttf";
+        public static final float FONT_SIZE = 32 * Game.getScale();
+    }
 }

@@ -4,24 +4,38 @@ import com.mireymackey.entities.EntityManager;
 import com.mireymackey.levels.LevelManager;
 import com.mireymackey.main.Game;
 
+import static com.mireymackey.utils.LoadSave.registerFont;
+import static com.mireymackey.utils.Constants.FontConstants.*;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 
 public class Playing extends State implements StateMethods{
 
     private LevelManager levelManager;
-
     private EntityManager entityManager;
 
+    private Font pixelFont;
     public Playing(Game game) {
         super(game);
         initClasses();
     }
 
+    private void initFont(){
+        try {
+            pixelFont = Font.createFont(Font.TRUETYPE_FONT, new File(FONT_PATH)).deriveFont(FONT_SIZE);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void initClasses() {
         levelManager = new LevelManager(game);
         entityManager = new EntityManager(this);
+        initFont();
     }
 
     @Override
@@ -34,10 +48,17 @@ public class Playing extends State implements StateMethods{
     public void draw(Graphics g) {
         levelManager.draw(g);
         entityManager.draw(g);
+        drawFlameCounter(g);
     }
 
     public void resetAll(){
         entityManager.resetEntities();
+    }
+
+    private void drawFlameCounter(Graphics g){
+        g.setFont(pixelFont);
+        g.drawString(entityManager.getCollectedFlamesCounter() + "/" + entityManager.getFlamesAmount(),
+                (int)(12 * Game.getScale()), (int)(32 * Game.getScale()));
     }
 
     @Override

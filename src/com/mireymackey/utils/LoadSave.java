@@ -68,7 +68,20 @@ public class LoadSave {
                 if (value == greenCode)
                     return new int[]{i * Game.getTilesSize(), j * Game.getTilesSize()};
              }
-        return new int[]{0, 0};
+        return new int[]{-1, -1};
+    }
+
+    public static int[][] getEntityCoordsArray(int greenCode){
+        BufferedImage levelImg = getSpriteImageArray(LEVEL_ONE_DATA)[0];
+        ArrayList<int []> coords = new ArrayList<>();
+        for (int j = 0; j < levelImg.getHeight(); j++)
+            for (int i = 0; i < levelImg.getWidth(); i++){
+                Color color = new Color(levelImg.getRGB(i, j));
+                int value = color.getGreen();
+                if (value == greenCode)
+                    coords.add(new int[] {i * Game.getTilesSize(), j * Game.getTilesSize()});
+            }
+        return coords.toArray(new int[coords.size()][2]);
     }
 
     public static BufferedImage[][] loadAnimation(int entityType) {
@@ -88,5 +101,15 @@ public class LoadSave {
             currentAnimation.clear();
         }
         return animations;
+    }
+
+    public static void registerFont(String fontPath, float fontSize){
+        try {
+            Font customFont = Font.createFont(Font.TRUETYPE_FONT, new File(fontPath)).deriveFont(fontSize);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
     }
 }

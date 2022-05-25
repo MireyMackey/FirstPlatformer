@@ -10,7 +10,7 @@ public abstract class Entity {
     protected float x, y;
     protected int width, height;
     protected Rectangle2D.Float hitbox;
-    protected int entityType;
+    public int entityType;
 
     public Entity(float x, float y, int width, int height, int entityType){
         this.x = x;
