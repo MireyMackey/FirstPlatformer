@@ -5,6 +5,7 @@ import com.mireymackey.main.Game;
 import com.mireymackey.utils.Constants;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 import static com.mireymackey.utils.Constants.EntityConstants.*;
 import static com.mireymackey.utils.LoadSave.getEntityCoords;
@@ -41,6 +42,7 @@ public class EntityManager {
         flameCheck();
 
         player.update();
+        soulCreator();
         playerSoul.update();
         portal.update();
         flame.update();
@@ -75,11 +77,19 @@ public class EntityManager {
     }
 
     private void soulCreator(){
-        if (playerSoul != null){
-            double x = player.getHitbox().getX();
-            double y = player.getHitbox().getY();
-            double width = player.getHitbox().getWidth();
-            double height = player.getHitbox().getHeight();
+        if (!playerSoul.isActive){
+            Rectangle2D.Float tempHitbox = new Rectangle2D.Float(player.hitbox.x, player.hitbox.y,
+                    player.hitbox.width, player.hitbox.height);
+            tempHitbox.x -= player.getXSpeed();
+            tempHitbox.y -= player.getAirSpeed();
+            if (player.isHorizontalSoulCollision) {
+                playerSoul.hitbox.x = ControlledEntity.getEntityXPosNextToWall(tempHitbox, player.getXSpeed());
+                playerSoul.isActive = true;
+            }
+            if (player.isVerticalSoulCollision) {
+                playerSoul.hitbox.y = ControlledEntity.GetEntityYPosUnderRoofOrAboveFloor(tempHitbox, player.getAirSpeed()) -1;
+                playerSoul.isActive = true;
+            }
         }
     }
 

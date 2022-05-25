@@ -15,6 +15,8 @@ public abstract class ControlledEntity extends AnimatedEntity{
     protected boolean directionIsRight = true;
     protected boolean moving = false;
     private final float speed = 2.00f;
+    protected float currentXSpeed = 0;
+
 
     //controls
     private boolean left;
@@ -23,15 +25,15 @@ public abstract class ControlledEntity extends AnimatedEntity{
     private boolean jump;
 
     //jumping and gravity
-    private float airSpeed = 0;
-    private final float gravity = 0.02f * Game.getScale();
-    private final float jumpSpeed = -1f * Game.getScale();
-    private final float fallSpeedAfterCollision = 0.1f * Game.getScale();
+    protected float airSpeed = 0;
+    protected final float gravity = 0.02f * Game.getScale();
+    protected final float jumpSpeed = -1f * Game.getScale();
+    protected final float fallSpeedAfterCollision = 0.1f * Game.getScale();
     protected boolean inAir = false;
 
     protected int[][] levelData;
 
-    protected boolean soulCheck = false;
+    public boolean soulCheck = false;
 
     public ControlledEntity(float x, float y, int width, int height, int entityType, int[][] levelData) {
         super(x, y, width, height, entityType);
@@ -69,6 +71,7 @@ public abstract class ControlledEntity extends AnimatedEntity{
 
     private void updatePosition(){
         moving = false;
+        currentXSpeed = 0;
 
         if (jump)
             jump();
@@ -76,31 +79,39 @@ public abstract class ControlledEntity extends AnimatedEntity{
             if (left == right)
                 return;
 
-        float xSpeed = 0;
-
         if (left)
-            xSpeed -= speed;
+            currentXSpeed -= speed;
         if (right)
-            xSpeed += speed;
+            currentXSpeed += speed;
 
         if (!inAir)
             if (!isEntityOnFloor(hitbox, levelData, soulCheck))
                 inAir = true;
 
-        if (inAir){
-            if (canMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, levelData, false)) {
-                hitbox.y += airSpeed;
-                airSpeed += gravity;
-            } else {
-                hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
-                if (airSpeed > 0){
-                    resetInAir();}
-                else
-                    airSpeed = fallSpeedAfterCollision;
-            }
-        }
-        updateXPos(xSpeed);
+        if (inAir) updateYPos();
+        updateXPos();
         moving = true;
+    }
+
+    protected void updateXPos() {
+        if (canMoveHere(hitbox.x + currentXSpeed, hitbox.y, hitbox.width, hitbox.height, levelData, soulCheck)){
+            hitbox.x += currentXSpeed;
+        }else {
+            hitbox.x = getEntityXPosNextToWall(hitbox, currentXSpeed);
+        }
+    }
+
+    protected void updateYPos(){
+        if (canMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, levelData, soulCheck)) {
+            hitbox.y += airSpeed;
+            airSpeed += gravity;
+        } else {
+            hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
+            if (airSpeed > 0){
+                resetInAir();}
+            else
+                airSpeed = fallSpeedAfterCollision;
+        }
     }
 
     private void jump() {
@@ -110,17 +121,9 @@ public abstract class ControlledEntity extends AnimatedEntity{
         airSpeed = jumpSpeed;
     }
 
-    private void resetInAir() {
+    protected void resetInAir() {
         inAir = false;
         airSpeed = 0;
-    }
-
-    private void updateXPos(float xSpeed) {
-        if (canMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, levelData, false)){
-            hitbox.x += xSpeed;
-        }else {
-            hitbox.x = getEntityXPosNextToWall(hitbox, xSpeed);
-        }
     }
 
     public boolean isPlayerFell(){
@@ -155,8 +158,10 @@ public abstract class ControlledEntity extends AnimatedEntity{
         down = false;
     }
 
+    @Override
     public void reset(){
-        inAir = false;
+        super.reset();
+        resetInAir();
         moving = false;
         hitbox.x = x;
         hitbox.y = y;
@@ -167,7 +172,7 @@ public abstract class ControlledEntity extends AnimatedEntity{
     }
 
 
-    private static boolean canMoveHere(float x, float y, float width, float height, int[][] levelData, boolean isSoulCheck){
+    protected static boolean canMoveHere(float x, float y, float width, float height, int[][] levelData, boolean isSoulCheck){
         if (!isSolid(x, y, levelData, isSoulCheck) //top left
                 && !isSolid(x + width, y + height, levelData, isSoulCheck) //bottom right
                 && !isSolid(x + width, y, levelData, isSoulCheck) //top right
@@ -194,25 +199,27 @@ public abstract class ControlledEntity extends AnimatedEntity{
         return false;
     }
 
-    private static boolean isSolid(float x, float y, int[][] levelData, boolean isSoulCheck){
-        if (x < 0 || x >= Game.getGameWidth()){
-            return true;
-        }
-        if (y < 0 || y >= Game.getGameHeight()){
-            return true;
-        }
-
+    protected static boolean isSolid(float x, float y, int[][] levelData, boolean isSoulCheck){
         float xIndex = x / Game.getTilesSize();
         float yIndex = y / Game.getTilesSize();
 
-        int value = levelData[(int) yIndex][(int) xIndex];
+        int value;
+        try {
+            value = levelData[(int) yIndex][(int) xIndex];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
 
-        if (isSolidTile(value, isSoulCheck))
-            return true;
+        if (isSoulCheck) {
+            if (isSolidTile(value, true) || isSolidTile(value, false))
+                return true;
+        } else
+            if (isSolidTile(value, false))
+                return true;
         return false;
     }
 
-    private static float getEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed) {
+    public static float getEntityXPosNextToWall(Rectangle2D.Float hitbox, float xSpeed) {
         int currentTile = (int)(hitbox.x / Game.getTilesSize());
         if(xSpeed > 0){
             //right
@@ -225,7 +232,7 @@ public abstract class ControlledEntity extends AnimatedEntity{
         }
     }
 
-    private static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
+    public static float GetEntityYPosUnderRoofOrAboveFloor(Rectangle2D.Float hitbox, float airSpeed) {
         if (airSpeed > 0){
             //falling, so touching floor
             int currentTile = (int) ((hitbox.y + hitbox.height) / Game.getTilesSize());
@@ -282,5 +289,9 @@ public abstract class ControlledEntity extends AnimatedEntity{
 
     public float getAirSpeed() {
         return airSpeed;
+    }
+
+    public float getXSpeed() {
+        return currentXSpeed;
     }
 }
