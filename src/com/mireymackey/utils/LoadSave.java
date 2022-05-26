@@ -10,10 +10,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 import static com.mireymackey.utils.Constants.EntityConstants.*;
+import static com.mireymackey.utils.Constants.LevelResources.*;
+
 
 public class LoadSave {
-    public static final String LEVEL_ONE_DATA = "res\\level_one_data";
-
     public static BufferedImage[] getSpriteImageArray(String fileName){
         BufferedImage[] img;
         File file = new File(fileName);
@@ -39,9 +39,9 @@ public class LoadSave {
         return img;
     }
 
-    public static int[][] getLevelData(){
+    public static int[][] getLevelData(int levelNum){
         int[][] levelData = new int[Game.getTilesInHeight()][Game.getTilesInWidth()];
-        BufferedImage img = getSpriteImageArray(LEVEL_ONE_DATA)[0];
+        BufferedImage img = getSpriteImageArray(getLevelPath(levelNum))[0];
 
         for (int j = 0; j < img.getHeight(); j++)
             for (int i = 0; i < img.getWidth(); i++){
@@ -59,8 +59,8 @@ public class LoadSave {
         return levelData;
     }
 
-    public static int[] getEntityCoords(int greenCode){
-        BufferedImage levelImg = getSpriteImageArray(LEVEL_ONE_DATA)[0];
+    public static int[] getEntityCoords(int greenCode, int levelNum){
+        BufferedImage levelImg = getSpriteImageArray(getLevelPath(levelNum))[0];
         for (int j = 0; j < levelImg.getHeight(); j++)
             for (int i = 0; i < levelImg.getWidth(); i++){
                 Color color = new Color(levelImg.getRGB(i, j));
@@ -71,8 +71,8 @@ public class LoadSave {
         return new int[]{-1, -1};
     }
 
-    public static int[][] getEntityCoordsArray(int greenCode){
-        BufferedImage levelImg = getSpriteImageArray(LEVEL_ONE_DATA)[0];
+    public static int[][] getEntityCoordsArray(int greenCode, int levelNum){
+        BufferedImage levelImg = getSpriteImageArray(getLevelPath(levelNum))[0];
         ArrayList<int []> coords = new ArrayList<>();
         for (int j = 0; j < levelImg.getHeight(); j++)
             for (int i = 0; i < levelImg.getWidth(); i++){

@@ -20,20 +20,27 @@ public class EntityManager {
     private int[][] levelData;
 
     private int collectedFlamesCounter = 0;
-    public EntityManager(Playing playing){
+    private int currentLevelNum;
+
+    public EntityManager(Playing playing, int currentLevelNum){
         this.playing = playing;
+        this.currentLevelNum = currentLevelNum;
+        loadData();
+    }
+
+    public void loadData(){
         levelData = playing.getLevelManager().getCurrentLevel().getLevelData();
 
         int[] xy;
-        xy = getEntityCoords(getEntityGreenCode(PORTAL));
+        xy = getEntityCoords(getEntityGreenCode(PORTAL), currentLevelNum);
         portal = new Portal(xy[0], xy[1]);
 
-        xy = getEntityCoords(getEntityGreenCode(PLAYER));
+        xy = getEntityCoords(getEntityGreenCode(PLAYER), currentLevelNum);
         xy[1] -= Game.getScale() * 4;
         player = new Player(xy[0], xy[1], (int)(16 * Game.getScale()), (int)(16 * Game.getScale()), levelData);
         playerSoul = new PlayerSoul(xy[0], xy[1], (int)(16 * Game.getScale()), (int)(16 * Game.getScale()), levelData);
 
-        int[][] xyArray = getEntityCoordsArray(getEntityGreenCode(FLAME));
+        int[][] xyArray = getEntityCoordsArray(getEntityGreenCode(FLAME), currentLevelNum);
         flames = new Flame[xyArray.length];
         for(int i = 0; i < xyArray.length; i++)
             flames[i] = new Flame(xyArray[i][0], xyArray[i][1]);
@@ -75,8 +82,17 @@ public class EntityManager {
     private void portalCheck(){
         if (portal.entityState == PortalConstants.PORTAL_ACTIVE && (player.getHitbox().intersects(portal.getHitbox()) ||
                 playerSoul.getHitbox().intersects(portal.getHitbox()))) {
-//            playing.getGame().gamestate = Gamestate.WIN;
+            setNewCurrentLevelNum();
+            playing.getLevelManager().loadNewLevel(currentLevelNum);
+            loadData();
             resetEntities();
+        }
+    }
+
+    private void setNewCurrentLevelNum(){
+        currentLevelNum++;
+        if (currentLevelNum > Constants.LevelResources.LEVELS_AMOUNT){
+            currentLevelNum = 1;
         }
     }
 

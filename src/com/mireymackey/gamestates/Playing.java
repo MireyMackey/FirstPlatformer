@@ -4,7 +4,6 @@ import com.mireymackey.entities.EntityManager;
 import com.mireymackey.levels.LevelManager;
 import com.mireymackey.main.Game;
 
-import static com.mireymackey.utils.LoadSave.registerFont;
 import static com.mireymackey.utils.Constants.FontConstants.*;
 
 import java.awt.*;
@@ -33,14 +32,13 @@ public class Playing extends State implements StateMethods{
     }
 
     private void initClasses() {
-        levelManager = new LevelManager(game);
-        entityManager = new EntityManager(this);
+        levelManager = new LevelManager(3);
+        entityManager = new EntityManager(this, 3);
         initFont();
     }
 
     @Override
     public void update() {
-        levelManager.update();
         entityManager.update();
     }
 

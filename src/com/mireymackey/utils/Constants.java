@@ -33,7 +33,12 @@ public class Constants {
     public static class LevelResources{
         public static final String LEVEL_TILES = "res/leveTiles/level_tilemap.png";
         public static final String SOUL_LEVEL_TILES = "res/leveTiles/soul_level_tilemap.png";
-        public static final String LEVEL_ONE = "res/level_one_data/level_one_data2.png";
+
+        public static final int LEVELS_AMOUNT = 3;
+
+        public static String getLevelPath (int levelNum){
+            return "res/level_data/level" + levelNum + ".png";
+        }
     }
 
     public static class EntityConstants{

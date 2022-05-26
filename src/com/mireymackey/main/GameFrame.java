@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class GameFrame extends JFrame {
     public GameFrame(GamePanel gamePanel){
+        this.setTitle("You are (not) alone");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.add(gamePanel);
         this.setUndecorated(true);
