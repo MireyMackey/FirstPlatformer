@@ -1,7 +1,7 @@
 package com.mireymackey.gamestates;
 
 public enum Gamestate {
-    PLAYING, MENU;
+    PLAYING, MENU, QUIT;
 
-    public static Gamestate state = PLAYING;
+    public static Gamestate gamestate = PLAYING;
 }

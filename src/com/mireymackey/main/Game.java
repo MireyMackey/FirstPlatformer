@@ -22,8 +22,6 @@ public class Game implements Runnable{
     public static final int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
     public static final int TILES_IN_WIDTH = 48;
     public static final int TILES_IN_HEIGHT = 27;
-    public Gamestate gamestate;
-
 
     public Game(){
         initClasses();
@@ -32,7 +30,6 @@ public class Game implements Runnable{
         gameFrame = new GameFrame(gamePanel);
         gamePanel.setFocusable(true);
         gamePanel.requestFocus();
-        gamePanel.setBackground(new Color(34, 34, 34));
 
         startGameLoop();
     }
@@ -61,7 +58,7 @@ public class Game implements Runnable{
     private void initClasses() {
         menu = new Menu(this);
         playing = new Playing(this);
-        gamestate = Gamestate.PLAYING;
+        Gamestate.gamestate = Gamestate.MENU;
     }
 
     public void startGameLoop(){
@@ -70,23 +67,16 @@ public class Game implements Runnable{
     }
 
     public void update(){
-        switch (Gamestate.state){
-            case PLAYING -> {
-                playing.update();
-            }
-            case MENU -> {
-                menu.update();
-            }
+        switch (Gamestate.gamestate){
+            case PLAYING -> playing.update();
+            case MENU -> menu.update();
+            case QUIT -> System.exit(0);
         }
     }
     public void render(Graphics g){
-        switch (gamestate){
-            case PLAYING -> {
-                playing.draw(g);
-            }
-            case MENU -> {
-                menu.draw(g);
-            }
+        switch (Gamestate.gamestate){
+            case PLAYING -> playing.draw(g);
+            case MENU -> menu.draw(g);
         }
     }
 
@@ -137,7 +127,7 @@ public class Game implements Runnable{
     }
 
     public void windowFocusLost() {
-        if(Gamestate.state == Gamestate.PLAYING)
+        if(Gamestate.gamestate == Gamestate.PLAYING)
             playing.getEntityManager().getPlayer().resetDirectionBooleans();
     }
 }

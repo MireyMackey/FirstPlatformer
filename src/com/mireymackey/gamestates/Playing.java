@@ -32,8 +32,8 @@ public class Playing extends State implements StateMethods{
     }
 
     private void initClasses() {
-        levelManager = new LevelManager(3);
-        entityManager = new EntityManager(this, 3);
+        levelManager = new LevelManager(1);
+        entityManager = new EntityManager(this, 1);
         initFont();
     }
 

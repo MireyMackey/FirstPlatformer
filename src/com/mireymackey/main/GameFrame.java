@@ -1,6 +1,6 @@
 package com.mireymackey.main;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame {
@@ -11,6 +11,8 @@ public class GameFrame extends JFrame {
         this.setUndecorated(true);
         makeFullScreen();
         this.setLocationRelativeTo(null);
+        setIconImage(new ImageIcon("res/ui/logo.png").getImage());
+
         this.setVisible(true);
     }
 

@@ -35,7 +35,7 @@ public abstract class AnimatedEntity extends Entity{
         }
     }
     public void draw(Graphics g){
-        g.drawImage(animations[entityState][getAnimationFrameIndex()],
+        g.drawImage(animations[entityState][animationFrameIndex],
                 (int)hitbox.x - getEntityOffsetX(entityType), (int)hitbox.y - getEntityOffsetY(entityType),
                 getEntityWidth(entityType), getEntityHeight(entityType), null);
 //        drawHitbox(g);

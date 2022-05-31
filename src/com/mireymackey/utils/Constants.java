@@ -41,6 +41,26 @@ public class Constants {
         }
     }
 
+    public static class UIConstants{
+        public static class Buttons{
+            public static final int BUTTON_DEFAULT_WIDTH = 160;
+            public static final int BUTTON_DEFAULT_HEIGHT = 96;
+            public static final int BUTTON_BOUND_DEFAULT_WIDTH = 160;
+            public static final int BUTTON_BOUND_DEFAULT_HEIGHT = 64;
+            public static final int BUTTON_WIDTH = (int)(BUTTON_DEFAULT_WIDTH * Game.getScale() / 1.5);
+            public static final int BUTTON_HEIGHT = (int)(BUTTON_DEFAULT_HEIGHT * Game.getScale() / 1.5);
+            public static final int BUTTON_BOUND_WIDTH = (int)(BUTTON_BOUND_DEFAULT_WIDTH * Game.getScale() / 1.5);
+            public static final int BUTTON_BOUND_HEIGHT = (int)(BUTTON_BOUND_DEFAULT_HEIGHT * Game.getScale() / 1.5);
+        }
+        public static final int BUTTONS = 0;
+
+        public static String getUIPath(int uiElement){
+            switch (uiElement){
+                case BUTTONS -> {return "res/ui/button_atlas.png";}
+                default -> {return null;}
+            }
+        }
+    }
     public static class EntityConstants{
         public static final int PLAYER = 0;
         public static final int PORTAL = 1;

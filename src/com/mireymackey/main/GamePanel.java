@@ -20,6 +20,8 @@ public class GamePanel extends JPanel {
         addKeyListener(new KeyboardInputs(this));
         addMouseListener(mouseInputs);
         addMouseMotionListener(mouseInputs);
+
+        setBackground(new Color(34, 34, 34));
     }
     public void setPanelSize(){
         Dimension size = new Dimension(1920,1080);

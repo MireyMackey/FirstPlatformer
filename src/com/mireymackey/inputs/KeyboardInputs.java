@@ -20,21 +20,17 @@ public class KeyboardInputs implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (Gamestate.state){
-            case PLAYING -> {gamePanel.getGame().getPlaying().keyPressed(e);
-            }
-            case MENU -> {gamePanel.getGame().getMenu().keyPressed(e);
-            }
+        switch (Gamestate.gamestate){
+            case PLAYING -> gamePanel.getGame().getPlaying().keyPressed(e);
+            case MENU -> gamePanel.getGame().getMenu().keyPressed(e);
         }
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        switch (Gamestate.state){
-            case PLAYING -> {gamePanel.getGame().getPlaying().keyReleased(e);
-            }
-            case MENU -> {gamePanel.getGame().getMenu().keyReleased(e);
-            }
+        switch (Gamestate.gamestate){
+            case PLAYING -> gamePanel.getGame().getPlaying().keyReleased(e);
+            case MENU -> gamePanel.getGame().getMenu().keyReleased(e);
         }
     }
 }
