@@ -5,12 +5,11 @@ import com.mireymackey.ui.AnimatedLogo;
 import com.mireymackey.ui.ButtonInMenu;
 import com.mireymackey.ui.Title;
 
-import static com.mireymackey.utils.LoadSave.getSpriteImage;
+import static com.mireymackey.utils.Constants.UIConstants.Buttons.BUTTON_SCALE;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 public class Menu extends State implements StateMethods{
     private final ButtonInMenu[] buttons = new ButtonInMenu[2];
@@ -19,10 +18,10 @@ public class Menu extends State implements StateMethods{
     public Menu(Game game) {
         super(game);
 
-        buttons[0] = new ButtonInMenu(Game.getGameWidth() / 2, (int) (100 * Game.getScale()), 0, Gamestate.PLAYING);
-        buttons[1] = new ButtonInMenu(Game.getGameWidth() / 2, (int) (148 * Game.getScale()), 1, Gamestate.QUIT);
-        animatedLogo = new AnimatedLogo((int)(5 * Game.getScale()), (int)(10 * Game.getScale()));
-        title = new Title((int)(80 * Game.getScale()), (int)(10 * Game.getScale()));
+        buttons[0] = new ButtonInMenu((int)(67 * Game.getScale()), (int) (155 * Game.getScale()), 0, Gamestate.PLAYING);
+        buttons[1] = new ButtonInMenu((int)(316 * Game.getScale()), (int) (155 * Game.getScale()), 1, Gamestate.QUIT);
+        animatedLogo = new AnimatedLogo((int)(140 * Game.getScale()), (int)(96 * Game.getScale()));
+        title = new Title((int)(50 * Game.getScale()), (int)(6 * Game.getScale()));
     }
 
     @Override
